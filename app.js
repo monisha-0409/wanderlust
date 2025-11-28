@@ -88,15 +88,20 @@ app.use((req,res,next)=>{
     next();
 });
 
-// app.get("/demouser",async(req,res)=>{
-//     let fakeUser = new User({
-//         email: "student@gmail.com",
-//         username: "delta-student"
-//     });
+app.get("/seed", async (req, res) => {
+    const sampleListings = require("./init/data.js");
+    const Listing = require("./models/listing.js");
 
-//   let registerdUser = await User.register(fakeUser, "helloworld");
-//   res.send(registerUser);
-// });
+    try {
+        await Listing.deleteMany({});
+        await Listing.insertMany(sampleListings);
+        res.send("Sample data inserted successfully!");
+    } catch (err) {
+        res.send("Error: " + err);
+    }
+});
+
+
 
 app.use("/listings",listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
