@@ -91,7 +91,12 @@ app.use((req,res,next)=>{
 app.get("/seed", async (req, res) => {
     const sampleListings = require("./init/data.js");
     const Listing = require("./models/listing.js");
+    const ownerId = "6929c9f3c1164716587077a9";
 
+    const listingsWithOwner = sampleListings.map(list =>({
+        ...list,
+        owner:ownerId
+    }));
     try {
         await Listing.deleteMany({});
         await Listing.insertMany(sampleListings);
